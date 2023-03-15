@@ -8,15 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ExamenAuto {
-    public static void main(String[] args) throws SQLException {
-        ExamenAuto obiect = new ExamenAuto();
+    public static void main(String[] args)  {
         menu();
-
-
-        //List<Intrebare> exemplu2 = obiect.readAllQuestions();
-
-        //System.out.println(exemplu);
-        //System.out.println(exemplu2);
     }
 
     private boolean insert(Intrebare intrebarea) throws SQLException {
@@ -36,10 +29,7 @@ public class ExamenAuto {
         pSt.setBoolean(8, intrebarea.optiuneaC.isEsteAdevarat());
         int val = pSt.executeUpdate(); // 1
 
-        boolean ok = false;
-        if (val != 0)
-            ok = true;
-        return ok;
+        return val != 0;
     }
 
     private List<Intrebare> readAllQuestions() throws SQLException {
@@ -61,9 +51,9 @@ public class ExamenAuto {
             String optiuneaA = rs.getString("optiuneaa");
             String optiuneaB = rs.getString("optiuneab");
             String optiuneaC = rs.getString("optiuneac");
-            Boolean optiuneaAbool = rs.getBoolean("optiuneaabool");
-            Boolean optiuneaBbool = rs.getBoolean("optiuneabbool");
-            Boolean optiuneaCbool = rs.getBoolean("optiuneacbool");
+            boolean optiuneaAbool = rs.getBoolean("optiuneaabool");
+            boolean optiuneaBbool = rs.getBoolean("optiuneabbool");
+            boolean optiuneaCbool = rs.getBoolean("optiuneacbool");
             Raspuns rOptiuneaA = new Raspuns(optiuneaA, optiuneaAbool);
             Raspuns rOptiuneaB = new Raspuns(optiuneaB, optiuneaBbool);
             Raspuns rOptiuneaC = new Raspuns(optiuneaC, optiuneaCbool);
@@ -129,24 +119,15 @@ public class ExamenAuto {
             String optiuneaA = sc.next();
             String temporar = sc.next();
             boolean optiuneaABoolean;
-            if (temporar.equals("\r\nfalse")) {
-                optiuneaABoolean = false;
-            } else
-                optiuneaABoolean = true;
+            optiuneaABoolean = !temporar.equals("\r\nfalse");
             String optiuneaB = sc.next();
             temporar = sc.next();
             boolean optiuneaBBoolean;
-            if (temporar.equals("\r\nfalse")) {
-                optiuneaBBoolean = false;
-            } else
-                optiuneaBBoolean = true;
+            optiuneaBBoolean = !temporar.equals("\r\nfalse");
             String optiuneaC = sc.next();
             temporar = sc.next();
             boolean optiuneaCBoolean;
-            if (temporar.equals("\r\nfalse")) {
-                optiuneaCBoolean = false;
-            } else
-                optiuneaCBoolean = true;
+            optiuneaCBoolean = !temporar.equals("\r\nfalse");
             String categoria = sc.next();
             Raspuns raspuns1 = new Raspuns(optiuneaA, optiuneaABoolean);
             Raspuns raspuns2 = new Raspuns(optiuneaB, optiuneaBBoolean);

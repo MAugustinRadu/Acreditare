@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6e096d0b-e2ee-4ec6-93ed-a38d46e3b3c1" name="Changes" comment="">
+    <list default="true" id="6e096d0b-e2ee-4ec6-93ed-a38d46e3b3c1" name="Changes" comment="Initial Program + Database insert">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ExamenAuto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ExamenAuto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Intrebare.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Intrebare.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Raspuns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Raspuns.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +64,17 @@
       <updated>1678805518623</updated>
       <workItem from="1678805519828" duration="647000" />
       <workItem from="1678807932952" duration="11538000" />
+      <workItem from="1678820801907" duration="163000" />
+      <workItem from="1678874620348" duration="3570000" />
     </task>
+    <task id="LOCAL-00001" summary="Initial Program + Database insert">
+      <created>1678820879531</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1678820879531</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -84,6 +90,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial Program + Database insert" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial Program + Database insert" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

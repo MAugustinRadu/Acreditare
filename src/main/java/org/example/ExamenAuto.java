@@ -8,16 +8,123 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ExamenAuto {
-    public static void main(String[] args) throws SQLException, FileNotFoundException {
+    public static void main(String[] args) throws SQLException {
         ExamenAuto obiect = new ExamenAuto();
+        menu();
 
 
-        File file=new File("C:\\Users\\radum\\OneDrive\\Desktop\\Proiect Acreditare\\Intrebari si raspunsuri.txt");
-        Scanner sc=new Scanner(file);
-        List<String> textDocument = new ArrayList<>();
+        //List<Intrebare> exemplu2 = obiect.readAllQuestions();
+
+        //System.out.println(exemplu);
+        //System.out.println(exemplu2);
+    }
+
+    private boolean insert(Intrebare intrebarea) throws SQLException {
+        final String URLDB = "jdbc:postgresql://localhost:5432/LucrareAcreditare";
+        final String USERNAMEDB = "postgres";
+        final String PWDDB = "admin";
+        Connection conn = DriverManager.getConnection(URLDB, USERNAMEDB, PWDDB);
+
+        PreparedStatement pSt = conn.prepareStatement("insert into chestionare(intrebare, optiuneaa, optiuneab, optiuneac, categoria, optiuneaabool, optiuneabbool, optiuneacbool) values(?, ?, ?, ?, ?, ?, ?, ?)");
+        pSt.setString(1, intrebarea.getIntrebare());
+        pSt.setString(2, intrebarea.optiuneaA.getTextulRaspunsului());
+        pSt.setString(3, intrebarea.optiuneaB.getTextulRaspunsului());
+        pSt.setString(4, intrebarea.optiuneaC.getTextulRaspunsului());
+        pSt.setString(5, intrebarea.getCategorie());
+        pSt.setBoolean(6, intrebarea.optiuneaA.isEsteAdevarat());
+        pSt.setBoolean(7, intrebarea.optiuneaB.isEsteAdevarat());
+        pSt.setBoolean(8, intrebarea.optiuneaC.isEsteAdevarat());
+        int val = pSt.executeUpdate(); // 1
+
+        boolean ok = false;
+        if (val != 0)
+            ok = true;
+        return ok;
+    }
+
+    private List<Intrebare> readAllQuestions() throws SQLException {
+        List<Intrebare> listaIntrebari = new ArrayList<>();
+
+        final String URLDB = "jdbc:postgresql://localhost:5432/LucrareAcreditare";
+        final String USERNAMEDB = "postgres";
+        final String PWDDB = "admin";
+        Connection conn = DriverManager.getConnection(URLDB, USERNAMEDB, PWDDB);
+
+        Statement pSt = conn.createStatement();
+
+        ResultSet rs = pSt.executeQuery("select * from chestionare order by id asc");
+
+        while (rs.next()) {
+
+            String textIntrebare = rs.getString("intrebare").trim();
+            String categoria = rs.getString("categoria").trim();
+            String optiuneaA = rs.getString("optiuneaa");
+            String optiuneaB = rs.getString("optiuneab");
+            String optiuneaC = rs.getString("optiuneac");
+            Boolean optiuneaAbool = rs.getBoolean("optiuneaabool");
+            Boolean optiuneaBbool = rs.getBoolean("optiuneabbool");
+            Boolean optiuneaCbool = rs.getBoolean("optiuneacbool");
+            Raspuns rOptiuneaA = new Raspuns(optiuneaA, optiuneaAbool);
+            Raspuns rOptiuneaB = new Raspuns(optiuneaB, optiuneaBbool);
+            Raspuns rOptiuneaC = new Raspuns(optiuneaC, optiuneaCbool);
+
+            Intrebare intrebarea = new Intrebare(textIntrebare, categoria, rOptiuneaA, rOptiuneaB, rOptiuneaC);
+            listaIntrebari.add(intrebarea);
+
+        }
+        return listaIntrebari;
+
+    }
+
+    public static void menu() {
+        Scanner input = new Scanner(System.in);
+        boolean dontExit = true;
+        do {
+            System.out.println("Bun venit la simulatorul de examen auto");
+            System.out.println("Selectati optiunea care o doriti sau scrieti exit pentru a iesi");
+            System.out.println("1.Chestionare/Mediu de invatare");
+            System.out.println("2.Simulare examen");
+            System.out.println("3.Introducere intrebari noi");
+            System.out.println("exit");
+            String optiunea = input.nextLine();
+            switch (optiunea) {
+                case "1":
+                    //to be implemented
+                    break;
+                case "2":
+                    //to be implemented
+                    break;
+                case "3":
+                    System.out.println("Documentul trebuie sa fie de forma:Textul Intrebarii/\n" +
+                            "Optiunea A/\n" +
+                            "true sau false optiunea A/\n" +
+                            "Optiunea B/\n" +
+                            "true sau false optiunea B/\n" +
+                            "Optiunea C/\n" +
+                            "true sau false optiunea C/\n" +
+                            "Categoria/");
+                    System.out.println("Va rog scrieti path-ul documentului (ex. C:\\Users\\radum\\OneDrive\\Desktop\\Proiect Acreditare\\Intrebari si raspunsuri.txt)");
+                    String path = input.nextLine();
+                    System.out.println("Va rog scrieti cate intrebari doriti ca programul sa citeasca");
+                    int numberOfQuestions = input.nextInt();
+                    try {
+                        System.out.println("Acestea sunt intrebariile pe care doriti sa le inserati " + readNewQuestions(path,numberOfQuestions));
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case "exit":
+                   dontExit = false;
+                    break;
+            }
+        } while (dontExit);
+    }
+    public static List<Intrebare> readNewQuestions(String path,int numberOfQuestions) throws FileNotFoundException {
+        File file = new File(path);
+        Scanner sc = new Scanner(file);
         sc.useDelimiter("/");
         List<Intrebare> intrebariDeInserat = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < numberOfQuestions; i++) {
             String textIntrebare = sc.next();
             String optiuneaA = sc.next();
             String temporar = sc.next();
@@ -48,68 +155,6 @@ public class ExamenAuto {
             intrebariDeInserat.add(deInserat);
         }
         sc.close();
-        System.out.println(obiect.readAllQuestions());
-
-        //List<Intrebare> exemplu2 = obiect.readAllQuestions();
-
-        //System.out.println(exemplu);
-        //System.out.println(exemplu2);
-    }
-
-    private boolean insert (Intrebare intrebarea) throws SQLException {
-        final String URLDB = "jdbc:postgresql://localhost:5432/LucrareAcreditare";
-        final String USERNAMEDB ="postgres";
-        final String PWDDB ="admin";
-        Connection conn = DriverManager.getConnection(URLDB, USERNAMEDB, PWDDB);
-
-        PreparedStatement pSt = conn.prepareStatement("insert into chestionare(intrebare, optiuneaa, optiuneab, optiuneac, categoria, optiuneaabool, optiuneabbool, optiuneacbool) values(?, ?, ?, ?, ?, ?, ?, ?)");
-        pSt.setString(1, intrebarea.getIntrebare());
-        pSt.setString(2, intrebarea.optiuneaA.getTextulRaspunsului());
-        pSt.setString(3, intrebarea.optiuneaB.getTextulRaspunsului());
-        pSt.setString(4, intrebarea.optiuneaC.getTextulRaspunsului());
-        pSt.setString(5, intrebarea.getCategorie());
-        pSt.setBoolean(6,intrebarea.optiuneaA.isEsteAdevarat());
-        pSt.setBoolean(7,intrebarea.optiuneaB.isEsteAdevarat());
-        pSt.setBoolean(8,intrebarea.optiuneaC.isEsteAdevarat());
-        int val = pSt.executeUpdate(); // 1
-
-        boolean ok = false;
-        if(val!=0)
-            ok=true;
-        return ok;
-    }
-
-    private List<Intrebare> readAllQuestions() throws SQLException {
-        List<Intrebare> listaIntrebari =new ArrayList<>();
-
-        final String URLDB = "jdbc:postgresql://localhost:5432/LucrareAcreditare";
-        final String USERNAMEDB ="postgres";
-        final String PWDDB ="admin";
-        Connection conn = DriverManager.getConnection(URLDB, USERNAMEDB, PWDDB);
-
-        Statement pSt = conn.createStatement();
-
-        ResultSet rs = pSt.executeQuery("select * from chestionare order by id asc");
-
-        while(rs.next()) {
-
-            String textIntrebare = rs.getString("intrebare").trim();
-            String categoria = rs.getString("categoria").trim();
-            String optiuneaA = rs.getString("optiuneaa");
-            String optiuneaB = rs.getString("optiuneab");
-            String optiuneaC = rs.getString("optiuneac");
-            Boolean optiuneaAbool = rs.getBoolean("optiuneaabool");
-            Boolean optiuneaBbool = rs.getBoolean("optiuneabbool");
-            Boolean optiuneaCbool = rs.getBoolean("optiuneacbool");
-            Raspuns rOptiuneaA = new Raspuns(optiuneaA,optiuneaAbool);
-            Raspuns rOptiuneaB = new Raspuns(optiuneaB,optiuneaBbool);
-            Raspuns rOptiuneaC = new Raspuns(optiuneaC,optiuneaCbool);
-
-            Intrebare intrebarea = new Intrebare(textIntrebare,categoria,rOptiuneaA,rOptiuneaB,rOptiuneaC);
-            listaIntrebari.add(intrebarea);
-
-        }
-        return listaIntrebari;
-
+        return intrebariDeInserat;
     }
 }

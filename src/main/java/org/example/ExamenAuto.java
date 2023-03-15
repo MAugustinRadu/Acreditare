@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ExamenAuto {
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws FileNotFoundException, SQLException {
         menu();
     }
 
-    private boolean insert(Intrebare intrebarea) throws SQLException {
+    public static boolean insert(Intrebare intrebarea) throws SQLException {
         final String URLDB = "jdbc:postgresql://localhost:5432/LucrareAcreditare";
         final String USERNAMEDB = "postgres";
         final String PWDDB = "admin";
@@ -32,7 +32,7 @@ public class ExamenAuto {
         return val != 0;
     }
 
-    private List<Intrebare> readAllQuestions() throws SQLException {
+    public static List<Intrebare> readAllQuestions() throws SQLException {
         List<Intrebare> listaIntrebari = new ArrayList<>();
 
         final String URLDB = "jdbc:postgresql://localhost:5432/LucrareAcreditare";
@@ -66,15 +66,15 @@ public class ExamenAuto {
 
     }
 
-    public static void menu() {
+    public static void menu() throws FileNotFoundException, SQLException {
         Scanner input = new Scanner(System.in);
         boolean dontExit = true;
         do {
             System.out.println("Bun venit la simulatorul de examen auto");
-            System.out.println("Selectati optiunea care o doriti sau scrieti exit pentru a iesi");
+            System.out.println("Selectati optiunea pe care o doriti sau scrieti exit pentru a iesi");
             System.out.println("1.Chestionare/Mediu de invatare");
             System.out.println("2.Simulare examen");
-            System.out.println("3.Introducere intrebari noi");
+            System.out.println("3.Optiuni Developer");
             System.out.println("exit");
             String optiunea = input.nextLine();
             switch (optiunea) {
@@ -85,23 +85,51 @@ public class ExamenAuto {
                     //to be implemented
                     break;
                 case "3":
-                    System.out.println("Documentul trebuie sa fie de forma:Textul Intrebarii/\n" +
-                            "Optiunea A/\n" +
-                            "true sau false optiunea A/\n" +
-                            "Optiunea B/\n" +
-                            "true sau false optiunea B/\n" +
-                            "Optiunea C/\n" +
-                            "true sau false optiunea C/\n" +
-                            "Categoria/");
-                    System.out.println("Va rog scrieti path-ul documentului (ex. C:\\Users\\radum\\OneDrive\\Desktop\\Proiect Acreditare\\Intrebari si raspunsuri.txt)");
-                    String path = input.nextLine();
-                    System.out.println("Va rog scrieti cate intrebari doriti ca programul sa citeasca");
-                    int numberOfQuestions = input.nextInt();
-                    try {
-                        System.out.println("Acestea sunt intrebariile pe care doriti sa le inserati " + readNewQuestions(path,numberOfQuestions));
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
+                    System.out.println("Selectati optiunea pe care o doriti sau scrieti back pentru a reveni la meniul principal");
+                    System.out.println("1.Adaugare intrebari noi");
+                    System.out.println("2.Vizualizare lista de intrebari");
+                    System.out.println("back");
+                    optiunea = input.nextLine();
+                    switch (optiunea) {
+                        case "1":
+                            System.out.println("Documentul trebuie sa fie de forma:Textul Intrebarii/\n" +
+                                    "Optiunea A/\n" +
+                                    "true sau false optiunea A/\n" +
+                                    "Optiunea B/\n" +
+                                    "true sau false optiunea B/\n" +
+                                    "Optiunea C/\n" +
+                                    "true sau false optiunea C/\n" +
+                                    "Categoria/");
+                            System.out.println("Va rog scrieti path-ul documentului (ex. C:\\Users\\radum\\OneDrive\\Desktop\\Proiect Acreditare\\Intrebari si raspunsuri.txt)");
+                            String path = input.nextLine();
+                            System.out.println("Va rog scrieti cate intrebari doriti ca programul sa citeasca");
+                            int numberOfQuestions = input.nextInt();
+                            try {
+                                System.out.println("Acestea sunt intrebariile pe care doriti sa le inserati " + readNewQuestions(path,numberOfQuestions));
+                            } catch (FileNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                            // This to insert the questions into the database
+//                    System.out.println();
+//                    System.out.println("Acuma se insereaza in baza de date");
+//                        List<Intrebare> deInserat = new ArrayList<>();
+//                        deInserat = readNewQuestions(path,numberOfQuestions);
+//                        for (int i = 0; i < deInserat.size(); i++) {
+//                            try {
+//                                insert(deInserat.get(i));
+//                            } catch (SQLException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        }
+                            break;
+                        case "2":
+                            System.out.println(readAllQuestions());
+                            break;
+                        case "back":
+                            break;
+
                     }
+
                     break;
                 case "exit":
                    dontExit = false;
